@@ -1,121 +1,71 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
 import Web3 from "web3";
+import Table from "./Table";
 
-// alternatively, you can connect to the Ethereum network using Alchemy
-// const alchemyUrl = 'https://eth-mainnet.alchemyapi.io/v2/your-api-key'; //replace your-api-key with your Alchemy API key
-// const web3 = new Web3(alchemyUrl);
+interface ITransfer {
+  blockNumber: number;
+  amount: number;
+  sender: string;
+  recipient: string;
+  transactionHash: string;
+}
 
-const inter = Inter({ subsets: ["latin"] });
+const infuraApi = "0e29589be8ee406fbdd8ff9cd65788e2";
+const infuraUrl = `https://mainnet.infura.io/v3/${infuraApi}`;
+const web3 = new Web3(infuraUrl);
+const daiAddress = "0x6b175474e89094c44da98b954eedeac495271d0f";
+const ETHERSCAN_API_KEY = "NB64ZPT1ZABJHCRRG1CAGPZ4MWGIPYZM33";
+const ETHERSCAN_API_URL = `https://api.etherscan.io/api?module=contract&action=getabi&address=0x6b175474e89094c44da98b954eedeac495271d0f&apikey=${ETHERSCAN_API_KEY}`;
 
-export default function Home() {
+const getTimestamp = async (blockNumber: string) => {
+  const timestamp = (await web3.eth.getBlock(blockNumber)).timestamp.toString();
+  return new Date(Number(timestamp) * 1000).toLocaleTimeString();
+};
+
+async function getTransfers() {
+  const res = await fetch(ETHERSCAN_API_URL, { cache: "no-store" });
+  const data = await res.json();
+  const daiABI = JSON.parse(data.result);
+  const daiContract = new web3.eth.Contract(daiABI, daiAddress);
+  const blockNumber = await web3.eth.getBlockNumber();
+  const fromBlock = Math.max(0, blockNumber - 200);
+  const daiTransfers = await daiContract.getPastEvents(
+    "Transfer",
+    {
+      fromBlock: fromBlock,
+      toBlock: "latest",
+    },
+    (err) => {
+      console.log(err);
+    }
+  );
+  const dai100 = daiTransfers.slice(0, 100);
+  // console.log("100 --->", dai100);
+  // Map the transfer events to a new array of objects with the required data
+  const transfers = dai100.map((event) => {
+    return {
+      blockNumber: event.blockNumber.toString(),
+      amount: event.returnValues.wad as number,
+      sender: event.returnValues.src as string,
+      recipient: event.returnValues.dst as string,
+      transactionHash: event.transactionHash,
+    };
+  });
+  // console.log("TRANSFERS =====> ", transfers);
+  // Return the array of transfers
+  for (const tran of transfers) {
+    // console.log(tran);
+    const timestamp = await getTimestamp(tran.blockNumber);
+    tran.blockNumber = `${timestamp}`;
+  }
+  return transfers as unknown as ITransfer[];
+}
+
+export default async function Home() {
+  const transfers = await getTransfers();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+      <h1>Last 100 Dai Transfers</h1>
+      <Table transfers={transfers} />
     </main>
   );
 }
