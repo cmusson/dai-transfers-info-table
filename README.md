@@ -63,6 +63,10 @@ return false;
   - The best source for accessing all information relevant to ethereum blockchains
 - Web3JS
   - Makes accessing an ethereum smart contract events possible with minimal code
+- Redux (toolkit)
+  - Redux makes client side state easy to share between components without excessive prop drilling allowing for more atomic layout of app
+  - Toolkit is a more user friendly version of using redux than previous
+  - Redux also works nicely with React based frameworks
 
 All of these technologies tie in nicely together for all the reasons listed above, with all of them supported within NextJS and TypeScript for easy app development.
 
@@ -71,17 +75,10 @@ All of these technologies tie in nicely together for all the reasons listed abov
 - Server side rendering the initial data was done so that the page would load with the table already populated with no load time.
 - The Dai ABI was added as a json file so that it didn't require an api request to access the information
 - Web3JS was only used for the webSocket as the etherscan api requests returned a more functional response object for the requested data
+- Redux was chosen to manage state most of the state to avoid large files and nasty amounts of prop drilling
 - A copy feature was added so that users can easily copy and paste any address seen, potentially looking up that specific addresses previous 100 as a sender or a receiver
 - The etherscan link opening in a new tab was so the user could view the transaction easily without changing the current page
 - The buttons to filter are disabled and become available only once a valid wallet address is entered to avoid attempting api calls with faulty data.
 - When working with the data, it made sense to have to sets of data, both updating per the same websocket if applicable, this way a new api get requesr was never required unless the filter parameters change. This would mean that resetting/switching back to the original table values would be fast and seamless
 - Styling was made to match the Tessera.co website, with the app functional at small and large screen sizes desktop and mobile.
 - Rather than pagination, being able to scroll down the page (phone or desktop), felt more user friendly than pagination as there was nothing else present in the app, with the headers and search options sticky and available the entire time the user views the data.
-
-######
-
-Clarity: Does the README clearly explain the problem and solution?
-Correctness: Does the application do what was asked? If there is anything missing, does the README explain why it is missing?
-Code Quality: Is the code simple, easy to understand, and maintainable?
-Testing: how thorough are the automated tests? Will they be difficult to change if the requirements of the application were to change?
-Technical Choices: Do choices of libraries, databases, architecture seem appropriate for the challenge?

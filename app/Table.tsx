@@ -39,6 +39,7 @@ export default function Table({ transfers }: ITableProps) {
   const type = useSelector(selectType);
   const [filterInput, setFilterInput] = useState("");
   const [clickCount, setClickCount] = useState(0);
+  const [initial, setInitial] = useState(true);
 
   // Trigger api to display last 100 of specified address
   useEffect(() => {
@@ -69,6 +70,7 @@ export default function Table({ transfers }: ITableProps) {
   // listen to new transfer events
   useEffect(() => {
     dispatch(setTransFs(transfers));
+    setInitial(false);
     const fetchAndSubscribe = async () => {
       const web3Socket = new Web3(
         new Web3.providers.WebsocketProvider(
@@ -180,7 +182,7 @@ export default function Table({ transfers }: ITableProps) {
       </div>
       <div className="flex flex-col items-center justify-between bg-prpl-light">
         {/* maps the rows for filtered or the original data for the table  */}
-        {(original ? transFs : filteredTransfers).map(
+        {(initial ? transfers : original ? transFs : filteredTransfers).map(
           (transfer: ITransfer, i: number) => (
             <div
               className={`flex flex-row px-4 justify-between border border-transparent hover:border-white  ${

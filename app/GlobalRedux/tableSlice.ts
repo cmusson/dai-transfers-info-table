@@ -102,19 +102,19 @@ export const tableSlice = createSlice({
       state.filteredTransfers.sort((a, b) => a.amount - b.amount);
     },
     sortTransFsLowToHighTime: (state) => {
-      state.transFs.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
+      state.transFs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
     },
     sortTransFsHighToLowTime: (state) => {
-      state.transFs.sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
+      state.transFs.sort((a, b) => Number(a.timestamp) - Number(b.timestamp));
     },
     sortFilteredTransfersLowToHighTime: (state) => {
       state.filteredTransfers.sort(
-        (a, b) => Number(a.timestamp) - Number(b.timestamp)
+        (a, b) => Number(b.timestamp) - Number(a.timestamp)
       );
     },
     sortFilteredTransfersHighToLowTime: (state) => {
       state.filteredTransfers.sort(
-        (a, b) => Number(b.timestamp) - Number(a.timestamp)
+        (a, b) => Number(a.timestamp) - Number(b.timestamp)
       );
     },
   },
