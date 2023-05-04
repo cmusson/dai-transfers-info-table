@@ -18,8 +18,8 @@ export default function InputAndSearch({
   resetFunc,
 }: IInputAndSearchProps) {
   return (
-    <div className="flex align-center gap-2 m-1 flex-col tablet:flex-row">
-      <div className="relative">
+    <div className="flex items-center gap-2 m-1 flex-col tablet:flex-row">
+      <div className="relative ">
         <input
           spellCheck="false"
           className="w-96 text-prpl-dark pl-1 pr-6 hover:text-red"
