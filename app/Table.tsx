@@ -219,7 +219,7 @@ export default function Table({ transfers }: ITableProps) {
         <div className="flex justify-between px-4 py-2 bg-prpl-lightest">
           <div className="flex justify-start w-20 tablet:w-40 text-xs tablet:text-base px-1">
             <div className="flex gap-2 align-center w-20 tablet:w-40 text-xs tablet:text-base px-1">
-              <div>Amount</div>
+              <h3>Amount</h3>
               <div className="flex flex-col ">
                 <Image
                   src={original ? upArrowAmount : filteredUpArrowAmount}
@@ -240,17 +240,17 @@ export default function Table({ transfers }: ITableProps) {
               </div>
             </div>
           </div>
-          <div className="w-20 tablet:w-40 text-xs tablet:text-base px-1">
+          <h3 className="w-20 tablet:w-40 text-xs tablet:text-base px-1">
             Sender
-          </div>
+          </h3>
           <div className="w-20 tablet:w-40 text-xs tablet:text-base px-1">
             Recipient
           </div>
-          <div className="w-20 tablet:w-40 text-xs tablet:text-base px-1">
+          <h3 className="w-20 tablet:w-40 text-xs tablet:text-base px-1">
             Etherscan
-          </div>
+          </h3>
           <div className="flex gap-2 align-center w-20 tablet:w-40 text-xs tablet:text-base px-1">
-            <div>Timestamp</div>
+            <h3>Timestamp</h3>
             <div className="flex flex-col">
               <Image
                 src={original ? upArrowTime : filteredUpArrowTime}
