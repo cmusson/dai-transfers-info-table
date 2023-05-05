@@ -24,7 +24,7 @@ import { ActionCreatorWithPayload, unwrapResult } from "@reduxjs/toolkit";
 import { AppDispatch, RootState } from "./GlobalRedux/store";
 import TableHeaders from "./TableHeaders";
 
-const infuraApi = process.env.INFURA_API_KEY;
+const infuraApi = process.env.NEXT_PUBLIC_INFURA_API_KEY;
 const infuraWebSocketUrl = `wss://mainnet.infura.io/ws/v3/${infuraApi}`;
 
 interface ITableProps {
@@ -73,9 +73,7 @@ export default function Table({ transfers }: ITableProps) {
     setInitial(false);
     const fetchAndSubscribe = async () => {
       const web3Socket = new Web3(
-        new Web3.providers.WebsocketProvider(
-          "wss://mainnet.infura.io/ws/v3/0e29589be8ee406fbdd8ff9cd65788e2"
-        )
+        new Web3.providers.WebsocketProvider(infuraWebSocketUrl)
       );
 
       const daiContract = new web3Socket.eth.Contract(
