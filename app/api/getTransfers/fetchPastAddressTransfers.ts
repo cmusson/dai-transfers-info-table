@@ -1,15 +1,9 @@
 import { ITransfer } from "@/app/util/definitions/interfaces";
-import Web3 from "web3";
-
-const infuraApi = process.env.INFURA_API_KEY;
-const infuraHttpUrl = `https://mainnet.infura.io/v3/${infuraApi}`;
 
 export async function fetchPastAddressTransfers(
   address: string,
   type: "sender" | "recipient"
 ): Promise<ITransfer[]> {
-  const web3 = new Web3(new Web3.providers.HttpProvider(infuraHttpUrl));
-
   const url = `https://api.etherscan.io/api?module=account&action=tokentx&contractaddress=0x6b175474e89094c44da98b954eedeac495271d0f&page=1&offset=1000&sort=desc&apikey=NB64ZPT1ZABJHCRRG1CAGPZ4MWGIPYZM33&address=${address}`;
   const response = await fetch(url.toString());
   const { result } = await response.json();
