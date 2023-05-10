@@ -22,7 +22,7 @@ export default function AddressCell({ transfer, type }: IRowProps) {
           <Image
             className="cursor-pointer hover:opacity-50"
             src={icon}
-            alt=""
+            alt="copy icon"
             width={17}
             height={17}
           />

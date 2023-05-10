@@ -124,7 +124,7 @@ export default function TableHeaders() {
             <Image
               src={original ? upArrowAmount : filteredUpArrowAmount}
               className="cursor-pointer hover:opacity-50"
-              alt=""
+              alt="arrow up"
               width={13}
               height={13}
               onClick={() => arrowSortFunc("amountLH")}
@@ -132,7 +132,7 @@ export default function TableHeaders() {
             <Image
               src={original ? downArrowAmount : filteredDownArrowAmount}
               className="cursor-pointer hover:opacity-50"
-              alt=""
+              alt="arrow down"
               width={13}
               height={13}
               onClick={() => arrowSortFunc("amountHL")}
@@ -153,7 +153,7 @@ export default function TableHeaders() {
           <Image
             src={original ? upArrowTime : filteredUpArrowTime}
             className="cursor-pointer hover:opacity-50"
-            alt=""
+            alt="arrow up"
             width={13}
             height={13}
             onClick={() => arrowSortFunc("timeLH")}
@@ -161,7 +161,7 @@ export default function TableHeaders() {
           <Image
             src={original ? downArrowTime : filteredDownArrowTime}
             className="cursor-pointer hover:opacity-50"
-            alt=""
+            alt="arrow down"
             width={13}
             height={13}
             onClick={() => arrowSortFunc("timeHL")}
