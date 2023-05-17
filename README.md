@@ -14,23 +14,6 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## Part A Improvements to 'callback hell' code using async await
-
-async function updateUserRole(email) {
-try {
-const database = await connectToDatabase();
-const user = await getUser(database, email);
-const settings = await getUserSettings(database, user.id);
-await setRole(database, user.id, "ADMIN");
-await notifyUser(user.id, "USER_ROLE_UPDATED");
-await notifyAdmins("USER_ROLE_UPDATED");
-return true;
-} catch (error) {
-console.error(error);
-return false;
-}
-}
-
 ## A description of the project
 
 - This project is a data table build with NextJS, TypeScript and Tailwind.
