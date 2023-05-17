@@ -1,6 +1,3 @@
-<img width="1063" alt="image" src="https://github.com/cmusson/dai-transfers-info-table/assets/83961538/e19ed103-1de3-4ae3-9b3f-87b0abf5219f">
-
-
 ## Getting Started
 
 First, run the development server:
@@ -69,3 +66,5 @@ All of these technologies tie in nicely together for all the reasons listed abov
 - Styling was made to match the Tessera.co website, with the app functional at small and large screen sizes desktop and mobile.
 - Rather than pagination, being able to scroll down the page (phone or desktop), felt more user friendly than pagination as there was nothing else present in the app, with the headers and search options sticky and available the entire time the user views the data.
 - Instead of using <Table> elements I created my own table with other elements as it was causing a hydration error which is a current active issue on github per https://github.com/vercel/next.js/discussions/36754
+  
+  <img width="1063" alt="image" src="https://github.com/cmusson/dai-transfers-info-table/assets/83961538/e19ed103-1de3-4ae3-9b3f-87b0abf5219f">
